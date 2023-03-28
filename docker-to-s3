@@ -17,9 +17,6 @@ pipeline{
             }
         }
         stage('deploy using main'){
-            when{
-                branch "main"
-            }
             steps{
                 sh "aws configure set region $AWS_DEFAULT_REGION" 
                 sh "aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID"  
@@ -28,18 +25,7 @@ pipeline{
                 sh "aws s3 cp /var/lib/jenkins/workspace/aws-s3/dockerimage.tar s3://my-new-bucket-for-docker"
             }
         }
-        stage('deploy using master'){
-            when{
-                branch "master"
-            }
-            steps{
-                sh "aws configure set region $AWS_DEFAULT_REGION" 
-                sh "aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID"  
-                sh "aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY"
-                sh "aws s3 mb s3://my-new-bucket-for-dockerfile"
-                sh "aws s3 cp /var/lib/jenkins/workspace/aws-s3/dockerimage.tar s3://my-new-bucket-for-dockerfile"
-            }
-        }
+       
     }
 }
     
